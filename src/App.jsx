@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Cart from "./pages/Cart/Cart";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
+import Footer from "./components/Footer/Footer";
 
 export default function App() {
   return <>
@@ -14,5 +15,6 @@ export default function App() {
         <Route path="/order" element={<PlaceOrder/>}/>
       </Routes>
     </div>
+    <Footer/>
   </>
 }
