@@ -2,6 +2,8 @@ import axios from 'axios';
 import { StoreContext } from '../../context/StoreContext'
 import './PlaceOrder.css'
 import { useContext, useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PlaceOrder() {
 
@@ -29,30 +31,43 @@ export default function PlaceOrder() {
 
     const placeOrder = async (event) => {
         event.preventDefault();
-        let orderItems = [];
-        food_list.map((item) => {
-            if(cartItems[item._id] > 0) {
-                let itemInfo = item;
-                itemInfo["quantity"] = cartItems[item.id];
-                orderItems.push(itemInfo)
+        const orderItems = food_list.reduce((acc, item) => {
+            const quantity = cartItems[item._id]; 
+            if (quantity && quantity > 0) {
+                acc.push({ ...item, quantity });
             }
-        })
-        let orderData = {
-            address:data,
+            return acc;
+        }, []);
+    
+        if (orderItems.length === 0) {
+            // Handle the case where there are no items in the cart 
+            toast.error("Your cart is empty!");
+            return;
+        }
+    
+        const orderData = {
+            address: data,
             items: orderItems,
             amount: getTotalCartAmount() + 2,
+        };
+    
+        try {
+            const response = await axios.post(url + "/api/order/place", orderData, { headers: { token } });
+            if (response.data.success) {
+                toast.success("Order placed successfully! Redirecting to payment..."); // Success toast
+                window.location.replace(response.data.session_url);
+            } else {
+                toast.error(`Error placing order: ${response.data.message}`); // Error toast
+            }
+        } catch (error) {
+            console.error("Error placing order:", error);
+            toast.error("An error occurred while placing your order."); // Error toast
         }
-        let response = await axios.post(url+"/api/order/place",orderData,{headers:{token}});
-        if (response.data.success) {
-            const {session_url} = response.data;
-            window.location.replace(session_url);
-        }
-        else {
-            alert("error")
-        }
-    }
+    };
+    
 
     return <>
+    <ToastContainer/>
         <form onSubmit={placeOrder} className='place-order'>
             <div className="place-order-left">
                 <p className='title'>Delivery Information</p>
