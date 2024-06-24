@@ -8,6 +8,7 @@ import { useState } from "react";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
 import { ToastContainer } from "react-toastify";
 import Verify from "./pages/verify/Verify";
+import MyOrders from "./pages/MyOrders/MyOrders";
 
 export default function App() {
 
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/order" element={<PlaceOrder/>}/>
         <Route path="/verify" element={<Verify/>}></Route>
+        <Route path="/myorders" element={<MyOrders/>}></Route>
       </Routes>
     </div>
     <Footer/>
