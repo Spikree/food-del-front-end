@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/order" element={<PlaceOrder/>}/>
-        <Route path="//verify" element={<Verify/>}></Route>
+        <Route path="/verify" element={<Verify/>}></Route>
       </Routes>
     </div>
     <Footer/>
