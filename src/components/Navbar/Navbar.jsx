@@ -2,6 +2,8 @@ import { useContext, useState } from 'react'
 import { assets } from '../../assets/assets'
 import './Navbar.css'
 import { Link, useNavigate } from 'react-router-dom';
+import { BsBasket3Fill } from "react-icons/bs";
+import { FaUserAlt } from "react-icons/fa";
 import { StoreContext } from '../../context/StoreContext';
 
 export default function Navbar({setShowLogin}) {
@@ -17,27 +19,25 @@ export default function Navbar({setShowLogin}) {
     }
     return <>
         <div className='navbar'>
-            <Link to='/'><img src={assets.logo} alt="" className="logo" /></Link>
+            <Link to='/'><h1 className='logo'>Copperleaf</h1></Link>
             
             <ul className="navbar-menu">
                 <Link to='/' onClick={() => setMenu("home")} className={menu ==="home"?"active":""}>Home</Link>    
                 <a href='#explore-menu' onClick={() => setMenu("menu")} className={menu === "menu"?"active":""}>Menu</a>
-                <a href='#app-download' onClick={() => setMenu("mobile-app")} className={menu === "mobile-app"?"active":""}>mobile-app</a>
-                <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === "contact-us"?"active":""}>contact us</a>
             </ul>
             <div className="navbar-right">
                 {/* <img src={assets.search_icon} alt="" /> */}
                 <div className="navbar-search-icon">
-                    <Link to='/cart'><img src={assets.basket_icon} alt="" /></Link>
+                    {token && <Link className='cart' to='/cart'><BsBasket3Fill style={{fontSize:"2rem", color:"gray"}}/></Link>}
                     <div className={getTotalCartAmount()===0?"":"dot"}>
                     </div>
                 </div>
                 {!token?<button onClick={() => setShowLogin(true)}>Sign in</button>:<div className='navbar-profile'>
-                    <img src={assets.profile_icon} alt="" />
+                <FaUserAlt style={{fontSize:"2rem", color:"gray"}} />
                     <ul className='nav-profile-dropdown'>
-                        <li onClick={() => {navigate('/myorders')}}><img src={assets.bag_icon} alt="" /> <p>Orders</p></li>
+                        <li onClick={() => {navigate('/myorders')}}>  <p>Orders</p></li>
                         <hr />
-                        <li onClick={logout}><img src={assets.logout_icon} alt="" /><p>Logout</p></li>
+                        <li onClick={logout}><p>Logout</p></li>
                     </ul>
                     </div>}
                 
